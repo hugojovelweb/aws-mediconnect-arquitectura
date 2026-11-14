@@ -7,7 +7,7 @@ Repositorio de trabajo del **reporte técnico de arquitectura AWS** para MediCon
 
 | | |
 |---|---|
-| **Equipo** | Hugo Jovel (`@hugojovelweb`, responsable del repositorio) · `[Nombre de la compañera]` (`@usuario-github`, revisión) |
+| **Equipo** | Hugo Jovel (`@hugojovelweb`, responsable del repositorio) · `Icxell Marcela Arévalo Mesa` (`https://github.com/marcelaarevalom-jpg`, revisión) |
 | **Región propuesta** | `us-east-1` (N. Virginia), 2 Zonas de Disponibilidad |
 | **Estado** | En revisión — ver [Pendientes antes de entregar](#7-pendientes-antes-de-entregar) |
 
