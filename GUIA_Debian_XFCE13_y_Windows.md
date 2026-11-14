@@ -1,11 +1,9 @@
 # Implementar soluciones escalables en la nube seleccionando los servicios de AWS adecuados según las necesidades del negocio. 
 
 # Alumnos: 
-Icxell Marcela Arévalo Mesa.
-Hugo Ernesto Jovel Hernandez.
-
+Icxell Marcela Arévalo Mesa | Hugo Ernesto Jovel Hernandez. 
 Kodigo Full Stack Jr 36 ·
-© Hugo Jovel Web (https://hugojovelweb.tech/)
+
 
 
 ## Archivos entregados
@@ -74,3 +72,7 @@ Si PowerShell bloquea el activate: `Set-ExecutionPolicy -Scope Process Bypass`.
 1. https://calculator.aws → Create estimate → región US East (N. Virginia).
 2. Ingresar los valores del Anexo A del reporte.
 3. Share → copiar el enlace y pegarlo en la sección 7.
+
+
+### Portfolio:
+© Hugo Jovel Web (https://hugojovelweb.tech/)
