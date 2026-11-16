@@ -64,7 +64,7 @@ Seguridad/observabilidad: IAM · Secrets Manager · KMS · CloudWatch · CloudTr
 - **Escalado programado los lunes** (05:30–12:00, UTC−6) + Application Auto Scaling hasta 20 tareas de API (10× la base).
 - **Secrets Manager + roles IAM de tarea**: ningún secreto en el repositorio ni en la imagen.
 
-El detalle completo, con tablas de justificación (16 servicios) y estimación de costos (~US$ 1,901.70/mes + 10 % de contingencia), está en el reporte.
+El detalle completo, con tablas de justificación (16 servicios) y estimación de costos (US$ 1,823.13/mes + 10 % de contingencia (presupuesto recomendado US$ 2,005.44)), está en el reporte.
 
 ## 3. Estructura del repositorio
 
@@ -190,15 +190,15 @@ git switch main && git pull
 |---|---|---|
 | Volumen | 50 000 usuarios activos/mes; 8 000 videoconsultas × 20 min; 800 SMS/mes; 1 TB de archivos | Ajustar con datos reales del caso si el instructor los entrega |
 | Precios | Lista de `us-east-1`, USD, bajo demanda, 730 h/mes | Contrastar con **AWS Pricing Calculator** (Anexo A del reporte) |
-| RDS | `db.m6g.large` Multi-AZ ≈ US$ 277/mes (varias fuentes difieren) | Confirmar tarifa exacta en la página oficial de RDS |
+| RDS | `db.m6g.large` Multi-AZ = US$ 277.42/mes (valor de la AWS Pricing Calculator) | Validado con la AWS Pricing Calculator |
 | SMS | ≈ US$ 0.337 por mensaje a El Salvador | Confirmar en la página oficial de SNS |
 | Videoconsulta | Amazon Chime SDK, US$ 0.0017 por minuto-asistente | Confirmar en la página oficial; es el mayor costo variable |
 | Equipo | La actividad pide 3 a 5 integrantes y somos 2 | Confirmar con coordinación del bootcamp |
 
 ## 7. Pendientes antes de entregar
 
-- [ ] Nombres completos de los integrantes en la portada del reporte
-- [ ] Estimación en **AWS Pricing Calculator** con su enlace/captura pegado en la sección 7
+- [x] Nombres completos de los integrantes en la portada del reporte
+- [x] Estimación en **AWS Pricing Calculator** con su enlace pegado en la sección 7
 - [ ] Verificación de precios por la revisora (`revision/REVISION_COMPANERA.md`)
 - [ ] Exportar el diagrama desde draw.io (PNG 200 %) y reemplazarlo en el Word si se editó
 - [ ] Regenerar el PDF desde el `.docx` final
