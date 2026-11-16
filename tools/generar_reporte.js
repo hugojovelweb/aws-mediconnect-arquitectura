@@ -36,27 +36,27 @@ const fargate =
 
 // [servicio, configuración / supuesto, costo, tipo]  tipo: F = base casi fijo, V = variable por uso
 const costs = [
-  ["Amazon Route 53", "1 zona hospedada + 10 M consultas DNS/mes", 0.5 + 10 * 0.4, "V"],
-  ["Amazon CloudFront", "800 GB salida/mes x $0.085 + 20 M solicitudes HTTPS x $0.01/10 k", 800 * 0.085 + 20 * 100 * 0.01, "V"],
-  ["AWS WAF", "2 Web ACL ($5) + 10 reglas ($1) + 30 M solicitudes x $0.60/M", 2 * 5 + 10 * 1 + 30 * 0.6, "F"],
-  ["Elastic Load Balancing (ALB)", "1 ALB Multi-AZ: 730 h x $0.0225 + ~4 LCU promedio x $0.008/h", H * 0.0225 + 4 * 0.008 * H, "F"],
-  ["NAT Gateway (x2, una por AZ)", "2 x 730 h x $0.045 + 300 GB procesados x $0.045", 2 * H * 0.045 + 300 * 0.045, "F"],
-  ["Amazon ECS en AWS Fargate", "API 2 tareas (1 vCPU/2 GB), portal 2 y dashboard 2 (0.5 vCPU/1 GB), worker 1; refuerzo lunes 6 h (+8/+6/+3 tareas); worker de reportes 2 vCPU/8 GB x 15 min/semana", fargate, "F"],
-  ["Amazon ECR", "20 GB de imágenes x $0.10", 20 * 0.1, "F"],
-  ["Amazon RDS for MySQL 8.4 (primaria)", "db.m6g.large Multi-AZ (~$277 instancia) + 200 GB gp3 Multi-AZ x $0.23 + 100 GB backup extra x $0.095", 277 + 200 * 0.23 + 100 * 0.095, "F"],
-  ["Amazon RDS - réplica de lectura", "db.m6g.large Single-AZ (~$138) + 200 GB gp3 x $0.115", 138 + 200 * 0.115, "F"],
-  ["Amazon ElastiCache for Redis", "2 nodos cache.t4g.small (Multi-AZ): 2 x 730 h x $0.032", 2 * H * 0.032, "F"],
-  ["Amazon S3 (archivos médicos y reportes)", "1 TB Standard + 1 TB réplica en us-east-2 x $0.023 + reportes 50 GB + 5 USD solicitudes + 100 GB replicación x $0.02", 1024 * 0.023 * 2 + 50 * 0.023 + 5 + 100 * 0.02, "V"],
-  ["Amazon SQS (+ DLQ)", "10 M solicitudes/mes x $0.40/M (1 M gratis)", 9 * 0.4, "V"],
-  ["Amazon EventBridge Scheduler", "1 programación semanal (dentro del nivel gratuito)", 0, "F"],
-  ["Amazon SES", "40 000 correos/mes x $0.10 por 1 000", 40 * 0.1, "V"],
-  ["Amazon SNS - SMS a El Salvador", "800 SMS/mes x $0.337 (solo recordatorios críticos y alertas de resultados)", 800 * 0.337, "V"],
-  ["Amazon Chime SDK (videoconsulta)", "8 000 consultas x 20 min x 2 asistentes = 320 000 min x $0.0017", 320000 * 0.0017, "V"],
-  ["AWS Secrets Manager", "6 secretos x $0.40 + llamadas API", 6 * 0.4 + 0.3, "F"],
-  ["AWS KMS", "4 claves CMK x $1 + 1 M solicitudes x $0.03/10 k", 4 + 3, "F"],
-  ["Amazon CloudWatch", "50 GB logs x $0.50 + almacenamiento + 20 alarmas + 1 dashboard", 50 * 0.5 + 1.5 + 20 * 0.1 + 3, "V"],
-  ["AWS CloudTrail", "1 trail de administración (gratis) + eventos de datos S3 (5 M x $0.10/100 k)", 5, "V"],
-  ["Transferencia de datos a Internet (API)", "200 GB - 100 GB gratis = 100 GB x $0.09", 100 * 0.09, "V"],
+  ["Amazon Route 53", "1 zona hospedada + 10 M consultas DNS/mes", 4.5, "V"],
+  ["Amazon CloudFront", "800 GB salida/mes x $0.085 + 20 M solicitudes HTTPS x $0.01/10 k", 88.0, "V"],
+  ["AWS WAF", "2 Web ACL ($5) + 10 reglas ($1) + 30 M solicitudes x $0.60/M", 38.0, "F"],
+  ["Elastic Load Balancing (ALB)", "1 ALB Multi-AZ: 730 h x $0.0225 + ~4 LCU promedio x $0.008/h", 39.79, "F"],
+  ["NAT Gateway (x2, una por AZ)", "2 x 730 h x $0.045 + 300 GB procesados x $0.045", 79.2, "F"],
+  ["Amazon ECS en AWS Fargate", "API 2 tareas (1 vCPU/2 GB), portal 2 y dashboard 2 (0.5 vCPU/1 GB), worker 1; refuerzo lunes 6 h (+8/+6/+3 tareas); worker de reportes 2 vCPU/8 GB x 15 min/semana", 178.36, "F"],
+  ["Amazon ECR", "20 GB de imágenes x $0.10", 2.0, "F"],
+  ["Amazon RDS for MySQL 8.4 (primaria)", "db.m6g.large Multi-AZ, 200 GB gp3, 100 GB de backup adicional, bajo demanda (valor de la AWS Pricing Calculator)", 277.42, "F"],
+  ["Amazon RDS - réplica de lectura", "db.m6g.large Single-AZ, 200 GB gp3 (valor de la AWS Pricing Calculator)", 133.96, "F"],
+  ["Amazon ElastiCache for Redis", "2 nodos cache.t4g.small (Multi-AZ): 2 x 730 h x $0.032", 46.72, "F"],
+  ["Amazon S3 (archivos médicos y reportes)", "1 TB Standard en us-east-1 + 1 TB de réplica en us-east-2 + 50 GB de reportes, con solicitudes y replicación (valor de la AWS Pricing Calculator)", 47.85, "V"],
+  ["Amazon SQS (+ DLQ)", "10 M solicitudes/mes x $0.40/M (1 M gratis)", 3.6, "V"],
+  ["Amazon EventBridge Scheduler", "1 programación semanal (dentro del nivel gratuito)", 0.0, "F"],
+  ["Amazon SES", "40 000 correos/mes x $0.10 por 1 000", 4.0, "V"],
+  ["Amazon SNS - SMS a El Salvador", "800 SMS/mes x $0.337 (cálculo manual: la calculadora no lo incluye; solo recordatorios críticos y alertas de resultados)", 269.6, "V"],
+  ["Amazon Chime SDK (videoconsulta)", "8 000 consultas x 20 min x 2 asistentes = 320 000 min x $0.0017", 544.0, "V"],
+  ["AWS Secrets Manager", "6 secretos + llamadas API (valor de la AWS Pricing Calculator)", 2.9, "F"],
+  ["AWS KMS", "4 claves CMK x $1 + 1 M solicitudes x $0.03/10 k", 7.0, "F"],
+  ["Amazon CloudWatch", "50 GB de logs, 20 alarmas y 1 dashboard (valor de la AWS Pricing Calculator)", 42.23, "V"],
+  ["AWS CloudTrail", "1 trail de administración (gratis) + eventos de datos S3 (5 M x $0.10/100 k)", 5.0, "V"],
+  ["Transferencia de datos a Internet (API)", "200 GB - 100 GB gratis = 100 GB x $0.09 (cálculo manual: la calculadora no lo incluye)", 9.0, "V"],
 ];
 const round2 = (n) => Math.round(n * 100) / 100;
 const total = round2(costs.reduce((a, c) => a + c[2], 0));
@@ -212,10 +212,10 @@ const cover = [
   table(["Dato", "Detalle"], [
     ["Bootcamp", "Kodigo Full Stack Jr 36"],
     ["Tipo de actividad", "Evaluación grupal — equipos de 3 a 5 estudiantes"],
-    ["Integrantes del equipo", ["[Nombre completo — integrante 1]", "[Nombre completo — integrante 2]", "[Nombre completo — integrante 3]", "[Nombre completo — integrante 4 (opcional)]", "[Nombre completo — integrante 5 (opcional)]"]],
+    ["Integrantes del equipo", ["Ixcell Marcela Arévalo Mesa", "Hugo Ernesto Jovel Hernández"]],
     ["Región AWS propuesta", "US East (N. Virginia) — us-east-1, 2 Zonas de Disponibilidad"],
     ["Fecha límite de entrega", "Domingo 15 de noviembre de 2026, 23:59"],
-    ["Versión del documento", "1.0 — noviembre de 2026"],
+    ["Versión del documento", "1.1 — noviembre de 2026 (estimación de costos validada en AWS Pricing Calculator)"],
   ], [2600, 6760], { boldFirst: true }),
   spacer(300),
   callout("Contenido", [
@@ -549,13 +549,13 @@ costRows.push(["Reserva de contingencia (10 %)", "Para picos, crecimiento y erro
 costRows.push(["PRESUPUESTO MENSUAL RECOMENDADO", "Total + contingencia (valor del AWS Budget)", money(round2(total + reserve)), ""]);
 const s7 = [
   H1("7. Estimación de Costos"),
-  P("La estimación usa precios de lista de **us-east-1** (USD, 730 horas/mes, bajo demanda) y los supuestos de la sección 2.3. Es un modelo de planificación: antes de entregar, el equipo debe reproducirlo en la **AWS Pricing Calculator** (Anexo A) y adjuntar la captura o el enlace oficial, porque la calculadora aplica impuestos, niveles gratuitos y cambios de precio vigentes."),
+  P("La estimación usa precios de lista de **us-east-1** (USD, 730 horas/mes, bajo demanda) y los supuestos de la sección 2.3. La estimación se reprodujo en la **AWS Pricing Calculator** (enlace al final de esta sección). Los valores de la calculadora son los oficiales; los SMS y la transferencia de datos se calcularon a mano porque la calculadora no los incluye."),
   H2("7.1 Costos por servicio"),
   table(["Servicio", "Configuración y cálculo", "Costo mensual", "Tipo"], costRows, [2500, 4500, 1260, 1100], {
     boldFirst: true, aligns: [undefined, undefined, AlignmentType.RIGHT, undefined],
     rowFill: (r, i) => (String(r[0]).startsWith("TOTAL") || String(r[0]).startsWith("PRESUPUESTO") ? "FFE7B8" : (String(r[0]).startsWith("Subtotal") || String(r[0]).startsWith("Reserva") ? "E8EEF5" : (i % 2 ? LIGHT : undefined))),
   }),
-  CAP("Tabla 7.1. Estimación mensual de costos. Los precios de RDS (instancia) son valores de referencia y deben confirmarse en la Calculadora."),
+  CAP("Tabla 7.1. Estimación mensual de costos. Valores tomados de la AWS Pricing Calculator; SMS y transferencia de datos calculados manualmente."),
   H2("7.2 Lectura de los resultados"),
   B("El costo total estimado es de **" + money(total) + " al mes** (≈ " + money(round2(total * 12)) + " al año) más una reserva del 10 % para fijar el presupuesto en **" + money(round2(total + reserve)) + "**."),
   B("Los mayores impulsores de costo son **Amazon Chime SDK**, **RDS** (primaria + réplica) y los **SMS a El Salvador** (≈ $0.34 por mensaje): reducir SMS a lo realmente crítico y usar correo/notificaciones push es la palanca más efectiva."),
@@ -567,10 +567,14 @@ const s7 = [
   B("**Compromisos de uso:** Compute Savings Plan (1 año) para Fargate y Reserved Instances/Database Savings Plans de 1 año para RDS, aplicados solo a la carga estable una vez medido el consumo real."),
   B("**Límite de gasto de SMS** en SNS, S3 Lifecycle (Standard-IA a los 90 días), retención de logs a 90 días y VPC Endpoints para reducir el procesamiento de NAT."),
   B("**Ambientes no productivos** (staging) apagados fuera del horario laboral."),
-  callout("Enlace o captura de la estimación (OBLIGATORIO para la entrega)", [
-    "Pegar aquí el enlace compartido de la AWS Pricing Calculator o insertar la captura: [ENLACE DE LA ESTIMACIÓN — pendiente de generar por el equipo].",
-    "Esta herramienta pública requiere iniciar sesión en el navegador; los pasos exactos están en el Anexo A.",
-  ], "FFF4E0", ORANGE),
+  callout("Enlace de la estimación (AWS Pricing Calculator)", [
+    "Estimación compartida en la AWS Pricing Calculator (región US East - N. Virginia). Total oficial de la calculadora más el cálculo manual de SMS y transferencia de datos: " + money(total) + " al mes.",
+  ], "E8F5E9", "2E7D32"),
+  new Paragraph({ spacing: { before: 120, after: 120 }, children: [
+    new TextRun({ text: "Enlace compartido: ", bold: true, size: 20, font: FONT }),
+    new ExternalHyperlink({ link: "https://calculator.aws/#/estimate?id=bc30fded3d33d4d662b6d66ff9c0b72faf09d0e7",
+      children: [new TextRun({ text: "https://calculator.aws/#/estimate?id=bc30fded3d33d4d662b6d66ff9c0b72faf09d0e7", size: 18, color: "0B5CAD", underline: {}, font: FONT })] }),
+  ] }),
   spacer(160),
 ];
 
@@ -597,11 +601,11 @@ const s8 = [
 
 /* ---------------------------- ANEXOS -------------------------------- */
 const sA = [
-  H1("Anexo A. Cómo generar la estimación en AWS Pricing Calculator"),
+  H1("Anexo A. Cómo se generó la estimación en AWS Pricing Calculator"),
   N("Ingresar a https://calculator.aws → **Create estimate** → seleccionar la región **US East (N. Virginia)**.", 3),
   N("Agregar cada servicio con **Add service** y capturar la configuración de la tabla 7.1 (más abajo, la lista de entradas).", 3),
   N("Nombrar la estimación «MediConnect – Producción» y usar **Share** para obtener el enlace público (o exportar a PDF/CSV).", 3),
-  N("Pegar el enlace/captura en el recuadro de la sección 7 y comparar el total con esta tabla; documentar las diferencias (impuestos, niveles gratuitos, precios vigentes).", 3),
+  N("El enlace de la estimación compartida está en la sección 7. Su total, más el cálculo manual de SMS y transferencia de datos (que la calculadora no incluye), coincide con la tabla 7.1.", 3),
   table(["Servicio en la Calculadora", "Valores a ingresar"], [
     ["Amazon Route 53", "1 hosted zone; 10 millones de consultas estándar"],
     ["Amazon CloudFront", "Data transfer out 800 GB; 20 millones de solicitudes HTTPS"],
@@ -616,8 +620,9 @@ const sA = [
     ["Amazon S3", "Standard 1 TB (us-east-1) + 1 TB (us-east-2) + 50 GB reportes; solicitudes y replicación estimadas"],
     ["Amazon SQS", "10 millones de solicitudes estándar"],
     ["Amazon SES", "40 000 correos/mes"],
-    ["Amazon SNS", "800 SMS a El Salvador/mes"],
+    ["Amazon SNS (SMS)", "800 SMS a El Salvador/mes — NO se ingresa en la calculadora; se calcula a mano (800 x $0.337)"],
     ["Amazon Chime SDK", "320 000 minutos-asistente de WebRTC"],
+    ["Transferencia de datos a Internet", "NO se ingresa en la calculadora; cálculo manual: (200 GB - 100 GB gratis) x $0.09"],
     ["AWS Secrets Manager / KMS", "6 secretos; 4 claves CMK; 1 millón de solicitudes"],
     ["Amazon CloudWatch / CloudTrail", "50 GB de logs; 20 alarmas; 1 dashboard; 5 millones de eventos de datos S3"],
   ], [3000, 6360], { boldFirst: true }),
@@ -631,7 +636,7 @@ const sA = [
   H1("Anexo C. Fuentes de precios consultadas (noviembre de 2026)"),
   B("AWS Fargate (us-east-1, Linux/x86): $0.04048 por vCPU-hora y $0.004445 por GB-hora — aws.amazon.com/fargate/pricing."),
   B("Application Load Balancer $0.0225/h y NAT Gateway $0.045/h — aws.amazon.com/elasticloadbalancing/pricing y aws.amazon.com/vpc/pricing."),
-  B("Amazon RDS for MySQL — aws.amazon.com/rds/mysql/pricing (confirmar la tarifa exacta de la instancia elegida)."),
+  B("Amazon RDS for MySQL — valor de la instancia y almacenamiento tomado de la AWS Pricing Calculator (aws.amazon.com/rds/mysql/pricing)."),
   B("Amazon SNS / AWS End User Messaging: SMS a El Salvador ≈ $0.337 por mensaje — aws.amazon.com/sns/sms-pricing."),
   B("Amazon Chime SDK: $0.0017 por minuto-asistente — aws.amazon.com/chime/chime-sdk/pricing."),
   B("Otros precios de lista (S3, CloudFront, WAF, SQS, SES, KMS, Secrets Manager, CloudWatch) tomados de las páginas oficiales de cada servicio; verificar vigencia en la Calculadora."),
